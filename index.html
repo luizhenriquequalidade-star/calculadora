@@ -6,8 +6,11 @@
     <meta name="description" content="Calculadora de bobina premium com visual moderno.">
     <title>⚡ Calculadora de Bobina Pro</title>
 
-    <!-- Referência ao manifest.json -->
+    <!-- Referência ao manifest.json (PWA) -->
     <link rel="manifest" href="manifest.json">
+
+    <!-- Ícone para navegadores (opcional, mas recomendado) -->
+    <link rel="icon" href="icon-192.png" type="image/png">
 
     <!-- Fonte Google: Inter + Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -198,7 +201,6 @@
             font-weight: 600;
         }
 
-        /* Responsivo */
         @media (max-width: 480px) {
             .caixa {
                 margin: 16px;
@@ -250,11 +252,6 @@
     </div>
 
     <script>
-        // Registro do Service Worker (para funcionamento offline)
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js');
-        }
-
         function calcular() {
             const bobinaInput = document.getElementById("bobina");
             const larguraInput = document.getElementById("largura");
