@@ -201,26 +201,54 @@
             font-weight: 600;
         }
 
-        /* Estilo do botão de instalação */
-        #installButton {
-            width: 100%;
+        /* Estilo dos botões */
+        .acoes {
             margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .botao {
             padding: 16px;
-            background: linear-gradient(135deg, #a8edea, #fed6e3);
-            color: #1a1a3e;
             border: none;
             border-radius: 14px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             font-family: 'Inter', sans-serif;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            width: 100%;
         }
 
-        #installButton:hover {
+        .botao-primario {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            color: #1a1a3e;
+        }
+
+        .botao-secundario {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .botao:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .dica {
+            display: none;
+            text-align: center;
+            color: #fff;
+            font-size: 13px;
+            margin-top: 10px;
+            opacity: 0.8;
         }
 
         @media (max-width: 480px) {
@@ -234,6 +262,10 @@
             }
             .total {
                 font-size: 38px;
+            }
+            .botao {
+                font-size: 15px;
+                padding: 14px;
             }
         }
     </style>
@@ -272,11 +304,22 @@
             <div class="unidade">Largura utilizada: <span id="larguraUsada">64</span> cm</div>
         </div>
 
-        <!-- Botão de instalação -->
-        <button id="installButton" style="display: none;">📲 Instalar App</button>
+        <!-- Botões de ação -->
+        <div class="acoes">
+            <button id="installButton" class="botao botao-primario">📲 Instalar App</button>
+            <button id="downloadHTMLButton" class="botao botao-secundario">⬇️ Baixar Calculadora (HTML)</button>
+        </div>
+
+        <p id="installHint" class="dica">
+            Não foi possível instalar automaticamente. Use o menu do navegador e escolha "Adicionar à tela inicial" ou "Instalar aplicativo". O arquivo HTML foi baixado.
+        </p>
     </div>
 
     <script>
+        // Salvar o HTML original antes de qualquer interação
+        const originalHTML = document.documentElement.outerHTML;
+
+        // Função de cálculo (mantida)
         function calcular() {
             const bobinaInput = document.getElementById("bobina");
             const larguraInput = document.getElementById("largura");
@@ -313,28 +356,60 @@
 
         window.onload = calcular;
 
-        // Lógica do botão de instalação
+        // Lógica de instalação PWA com fallback para download
         let deferredPrompt = null;
         const installButton = document.getElementById('installButton');
+        const downloadHTMLButton = document.getElementById('downloadHTMLButton');
+        const installHint = document.getElementById('installHint');
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            installButton.style.display = 'block';
+            // O prompt está disponível, não precisa mudar nada
         });
 
         installButton.addEventListener('click', async () => {
-            if (deferredPrompt === null) {
-                return;
+            if (deferredPrompt) {
+                // Usa o prompt nativo
+                deferredPrompt.prompt();
+                const choiceResult = await deferredPrompt.userChoice;
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('Usuário aceitou a instalação');
+                }
+                deferredPrompt = null;
+            } else {
+                // Fallback: baixar HTML e mostrar dica
+                downloadHTML();
+                installHint.style.display = 'block';
+                setTimeout(() => {
+                    installHint.style.display = 'none';
+                }, 6000);
             }
-            deferredPrompt.prompt();
-            const choiceResult = await deferredPrompt.userChoice;
-            deferredPrompt = null;
-            installButton.style.display = 'none';
         });
 
+        downloadHTMLButton.addEventListener('click', () => {
+            downloadHTML();
+        });
+
+        function downloadHTML() {
+            // Usar o HTML original (sem alterações)
+            const blob = new Blob([originalHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'calculadora-bobina.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
         window.addEventListener('appinstalled', () => {
-            installButton.style.display = 'none';
+            installHint.textContent = 'Aplicativo instalado com sucesso!';
+            installHint.style.display = 'block';
+            setTimeout(() => {
+                installHint.style.display = 'none';
+            }, 4000);
         });
     </script>
 </body>
