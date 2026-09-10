@@ -2,15 +2,18 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Calculadora de bobina premium com visual moderno.">
     <title>⚡ Calculadora de Bobina Pro</title>
 
-    <!-- Referência ao manifest.json (PWA) -->
+    <!-- Configurações para PWA e Atalhos -->
     <link rel="manifest" href="manifest.json">
-
-    <!-- Ícone para navegadores -->
-    <link rel="icon" href="icon-192.png" type="image/png">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMGYwYzI5IiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDAiIGZpbGw9IiNhOGVkZWEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSJib2xkIj7impw8L3RleHQ+PC9zdmc+" type="image/svg+xml">
+    
+    <!-- Metatags para iOS (iPhone/iPad) salvar o ícone e abrir em tela cheia -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Calculadora">
 
     <!-- Fonte Google: Inter + Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,6 +39,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            user-select: none;
         }
 
         body::before {
@@ -61,34 +65,30 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 24px;
-            padding: 36px 32px;
+            padding: 30px 24px;
             width: 100%;
             max-width: 480px;
             border: 1px solid rgba(255, 255, 255, 0.25);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
             transition: transform 0.3s ease;
-        }
-
-        .caixa:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            margin: 16px;
         }
 
         h2 {
             text-align: center;
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
-            font-size: 28px;
+            font-size: 26px;
             background: linear-gradient(135deg, #fff, #a8edea 40%, #fed6e3 90%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
             letter-spacing: -0.5px;
         }
 
         .campo {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             position: relative;
         }
 
@@ -98,15 +98,15 @@
             gap: 8px;
             font-weight: 600;
             color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 10px;
-            font-size: 14px;
+            margin-bottom: 8px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.8px;
         }
 
         label svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             stroke: #a0e9ff;
             fill: none;
             stroke-width: 2;
@@ -114,11 +114,11 @@
 
         input {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px 14px;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 14px;
-            font-size: 18px;
+            border-radius: 12px;
+            font-size: 17px;
             color: #fff;
             outline: none;
             transition: all 0.3s ease;
@@ -139,8 +139,8 @@
         .resultado {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            padding: 24px;
+            border-radius: 18px;
+            padding: 20px;
             margin-top: 10px;
             text-align: center;
             position: relative;
@@ -167,18 +167,18 @@
         .resultado-titulo {
             position: relative;
             z-index: 1;
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             color: rgba(255, 255, 255, 0.7);
             letter-spacing: 2px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .total {
             position: relative;
             z-index: 1;
             font-family: 'Poppins', sans-serif;
-            font-size: 48px;
+            font-size: 42px;
             font-weight: 800;
             background: linear-gradient(135deg, #a8edea, #fed6e3);
             -webkit-background-clip: text;
@@ -191,8 +191,8 @@
         .unidade {
             position: relative;
             z-index: 1;
-            margin-top: 8px;
-            font-size: 14px;
+            margin-top: 6px;
+            font-size: 13px;
             color: rgba(255, 255, 255, 0.6);
         }
 
@@ -201,19 +201,18 @@
             font-weight: 600;
         }
 
-        /* Estilo dos botões */
         .acoes {
             margin-top: 20px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .botao {
-            padding: 16px;
+            padding: 14px;
             border: none;
-            border-radius: 14px;
-            font-size: 16px;
+            border-radius: 12px;
+            font-size: 15px;
             font-weight: 700;
             font-family: 'Inter', sans-serif;
             cursor: pointer;
@@ -246,27 +245,19 @@
             display: none;
             text-align: center;
             color: #fff;
-            font-size: 13px;
+            font-size: 12px;
             margin-top: 10px;
             opacity: 0.8;
         }
 
         @media (max-width: 480px) {
             .caixa {
-                margin: 16px;
-                padding: 24px 20px;
+                padding: 20px 16px;
                 border-radius: 20px;
             }
-            h2 {
-                font-size: 22px;
-            }
-            .total {
-                font-size: 38px;
-            }
-            .botao {
-                font-size: 15px;
-                padding: 14px;
-            }
+            h2 { font-size: 22px; }
+            .total { font-size: 36px; }
+            .botao { font-size: 14px; padding: 12px; }
         }
     </style>
 </head>
@@ -304,14 +295,14 @@
             <div class="unidade">Largura utilizada: <span id="larguraUsada">64</span> cm</div>
         </div>
 
-        <!-- Botões de ação -->
         <div class="acoes">
-            <button id="installButton" class="botao botao-primario">📲 Instalar App</button>
+            <button id="installButton" class="botao botao-primario">📲 Instalar App (Salvar Atalho)</button>
+            <button id="fullscreenButton" class="botao botao-secundario">⛶ Tela Cheia</button>
             <button id="downloadHTMLButton" class="botao botao-secundario">⬇️ Baixar Calculadora (HTML)</button>
         </div>
 
         <p id="installHint" class="dica">
-            Não foi possível instalar automaticamente. Use o menu do navegador e escolha "Adicionar à tela inicial" ou "Instalar aplicativo". O arquivo HTML foi baixado.
+            Para instalar no iPhone: Toque em Compartilhar e depois em "Adicionar à Tela de Início".
         </p>
     </div>
 
@@ -319,7 +310,6 @@
         // Salvar o HTML original antes de qualquer interação
         const originalHTML = document.documentElement.outerHTML;
 
-        // Função de cálculo (mantida)
         function calcular() {
             const bobinaInput = document.getElementById("bobina");
             const larguraInput = document.getElementById("largura");
@@ -356,7 +346,21 @@
 
         window.onload = calcular;
 
-        // Lógica de instalação PWA com fallback para download
+        // Lógica de Tela Cheia
+        const fullscreenButton = document.getElementById('fullscreenButton');
+        fullscreenButton.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Erro ao tentar tela cheia: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        });
+
+        // Lógica de instalação PWA
         let deferredPrompt = null;
         const installButton = document.getElementById('installButton');
         const downloadHTMLButton = document.getElementById('downloadHTMLButton');
@@ -365,12 +369,10 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // O prompt está disponível, não precisa mudar nada
         });
 
         installButton.addEventListener('click', async () => {
             if (deferredPrompt) {
-                // Usa o prompt nativo
                 deferredPrompt.prompt();
                 const choiceResult = await deferredPrompt.userChoice;
                 if (choiceResult.outcome === 'accepted') {
@@ -383,7 +385,7 @@
                 installHint.style.display = 'block';
                 setTimeout(() => {
                     installHint.style.display = 'none';
-                }, 6000);
+                }, 8000);
             }
         });
 
@@ -392,7 +394,6 @@
         });
 
         function downloadHTML() {
-            // Usar o HTML original (sem alterações)
             const blob = new Blob([originalHTML], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -411,10 +412,8 @@
                 installHint.style.display = 'none';
             }, 4000);
         });
-    </script>
 
-    <!-- Registro do Service Worker (adicionado) -->
-    <script>
+        // Registro do Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js')
